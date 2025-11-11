@@ -8,7 +8,7 @@ constexpr long long MOD = 1e9;
 
 int main() {
     cin.tie(nullptr)->sync_with_stdio(false);
-    
+
     long long a, b;
     cin >> a >> b;
 
