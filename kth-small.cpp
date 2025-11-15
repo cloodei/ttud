@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <string>
+#include "sort/cntsorts.cpp"
 typedef __int128 i128;
 using namespace std;
 
@@ -46,7 +47,12 @@ int main() {
     for (int i = 0; i < n; ++i)
     	cin >> a[i];
 
-    cout << K(a);
+    // cout << K(a);
+
+    countSort(a, n);
+
+    for (int i = 0; i < n; ++i)
+    	cout << a[i] << ' ';
 
     return 0;
 }

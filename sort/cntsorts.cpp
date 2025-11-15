@@ -11,16 +11,16 @@ using namespace std;
 static constexpr size_t MAX_ELEM_LIMIT = 5000, MIN_ELEM_LIMIT = 0, HIST_SIZE = 256;
 
 template<typename T>
-void counting_sort(T* arr, size_t n, const size_t min_lim = MIN_ELEM_LIMIT, const size_t max_lim = MAX_ELEM_LIMIT) noexcept {
-    if (n < 2)
+void counting_sort(T* arr, size_t _n, const size_t min_lim = MIN_ELEM_LIMIT, const size_t max_lim = MAX_ELEM_LIMIT) noexcept {
+    if (_n < 2)
         return;
 
     size_t r = max_lim - min_lim + 1;
     size_t* count = new size_t[r];
     memset(count, 0, r * sizeof(size_t));
 
-    while (n--)
-        count[arr[n] - min_lim]++;
+    while (_n--)
+        count[arr[_n] - min_lim]++;
 
     T* write = arr;
     for (size_t i = 0; i < r; ++i) {
@@ -47,14 +47,14 @@ void counting_sort(T* arr, size_t n, const size_t min_lim = MIN_ELEM_LIMIT, cons
 }
 
 template<typename T>
-inline void countingSort(T* arr, size_t n, const size_t min_lim = MIN_ELEM_LIMIT, const size_t max_lim = MAX_ELEM_LIMIT) noexcept {
-	counting_sort(arr, n, min_lim, max_lim);
+inline void countingSort(T* arr, size_t _n, const size_t min_lim = MIN_ELEM_LIMIT, const size_t max_lim = MAX_ELEM_LIMIT) noexcept {
+	counting_sort(arr, _n, min_lim, max_lim);
 }
 
 
 template<typename T>
-void radixSort(T* arr, const size_t n) {
-    if (n < 2)
+void radixSort(T* arr, const size_t _size) {
+    if (_size < 2)
         return;
 
     constexpr bool is_signed = std::is_signed<T>::value;
@@ -62,14 +62,14 @@ void radixSort(T* arr, const size_t n) {
 
     constexpr size_t num_passes = sizeof(T) - 1;
 
-    T* buffer = new T[n];
+    T* buffer = new T[_size];
     size_t histogram[HIST_SIZE];
     T* src = arr, *dst = buffer;
 
     for (size_t pass = 0; pass < num_passes; ++pass) {
         memset(histogram, 0, sizeof(histogram));
 
-        for (size_t i = 0; i < n; ++i) {
+        for (size_t i = 0; i < _size; ++i) {
             UnsignedT value = static_cast<UnsignedT>(src[i]);
             uint8_t digit = (value >> (pass << 3)) & 0xFF;
             histogram[digit]++;
@@ -82,7 +82,7 @@ void radixSort(T* arr, const size_t n) {
             pos += tmp;
         }
 
-        for (size_t i = 0; i < n; ++i) {
+        for (size_t i = 0; i < _size; ++i) {
             UnsignedT value = static_cast<UnsignedT>(src[i]);
             uint8_t digit = (value >> (pass << 3)) & 0xFF;
             dst[histogram[digit]] = src[i];
@@ -94,11 +94,11 @@ void radixSort(T* arr, const size_t n) {
 
     memset(histogram, 0, sizeof(histogram));
     
-    for (size_t i = 0; i < n; ++i) {
+    for (size_t i = 0; i < _size; ++i) {
         UnsignedT value = static_cast<UnsignedT>(src[i]);
         uint8_t digit = (value >> ((num_passes) << 3)) & 0xFF;
 
-        if constexpr (is_signed) {
+        if constexpr (is_signed)
             digit ^= 0x80;
         
         histogram[digit]++;
@@ -111,7 +111,7 @@ void radixSort(T* arr, const size_t n) {
         pos += tmp;
     }
 
-    for (size_t i = 0; i < n; ++i) {
+    for (size_t i = 0; i < _size; ++i) {
         UnsignedT value = static_cast<UnsignedT>(src[i]);
         uint8_t digit = (value >> ((num_passes) << 3)) & 0xFF;
 
@@ -123,14 +123,14 @@ void radixSort(T* arr, const size_t n) {
     }
 
     if (num_passes & 1)
-        memcpy(arr, dst, n * sizeof(T));
+        memcpy(arr, dst, _size * sizeof(T));
 
     delete[] buffer;
 }
 
 template<typename T>
-inline void radix_sort(T* arr, const size_t n) noexcept {
-	radixSort(arr, n);
+inline void radix_sort(T* arr, const size_t _n) noexcept {
+	radixSort(arr, _n);
 }
 
 
