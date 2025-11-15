@@ -23,7 +23,7 @@ long long fibMemo(long long n) {
 	return a[n] = fibMemo(n - 1) + fibMemo(n - 2);
 }
 
-long long fibDyn(long long n) {
+inline long long fibDyn(long long n) noexcept {
 	long long f1 = 0, f2 = 1, f3 = 1;
 
 	for (long long i = 2LL; i < n; ++i) {
@@ -36,7 +36,7 @@ long long fibDyn(long long n) {
 }
 
 
-vector<vector<long long>> mulMat(vector<vector<long long>>& a, vector<vector<long long>>& b) {
+inline vector<vector<long long>> mulMat(vector<vector<long long>>& a, vector<vector<long long>>& b) noexcept {
 	vector<vector<long long>> res = {{0, 0}, {0, 0}};
 	res[0][0] = a[0][0] * b[0][0] + a[0][1] * b[1][0];
 	res[1][0] = a[1][0] * b[0][0] + a[1][1] * b[1][0];
@@ -46,7 +46,7 @@ vector<vector<long long>> mulMat(vector<vector<long long>>& a, vector<vector<lon
 	return res;
 }
 
-long long fibMat(long long n) {
+long long fibMat(long long n) noexcept {
 	vector<vector<long long>> res = {{1, 0}, {0, 1}};
 	vector<vector<long long>> a   = {{1, 1}, {1, 0}};
 
@@ -63,7 +63,7 @@ long long fibMat(long long n) {
 
 int main() {
     cin.tie(nullptr)->sync_with_stdio(false);
-    int n;
+    long long n;
     cin >> n;
 
     if (n < 30)

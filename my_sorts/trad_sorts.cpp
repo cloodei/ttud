@@ -1,11 +1,14 @@
+#ifndef TRADS
+#define TRADS
+
 #include <vector>
-#include <iterator>
+#include <concepts>
 #include <algorithm>
 #include <type_traits>
 using namespace std;
 
 
-constexpr size_t THRESHOLD = 24;
+static constexpr size_t THRESHOLD = 24;
 
 template<typename T, typename Comp>
 concept Comparator = requires(Comp comp, T a, T b) {
@@ -142,7 +145,7 @@ void mergeSort(T* arr, const size_t n) noexcept {
 	}
 
 	size_t i = 0;
-    for (; i < n - THRESHOLD; i += THRESHOLD)
+    for (; i < n - THRESHOLD; i +=THRESHOLD)
     	insertionSort(arr, i, i + THRESHOLD - 1);
     if  (i < n)
     	insertionSort(arr, i, n - 1);
@@ -152,10 +155,10 @@ void mergeSort(T* arr, const size_t n) noexcept {
     
     for (size_t width = THRESHOLD; width < n; width <<= 1) {
         for (i = 0; i < n; i += (width << 1)) {
-            size_t l = i, current = i;
             const size_t mid = std::min(i + width, n), right = std::min(mid + width, n);
             size_t r = mid;
-            
+            size_t l = i, current = i;
+
             while (l < mid && r < right)
                 dst[current++] = (src[l] < src[r] ? src[l++] : src[r++]);
             while (l < mid)
@@ -205,7 +208,7 @@ void heapSort(T* arr, const size_t n) noexcept {
         arr[i] = arr[0];
         size_t parent = 0, child = 1;
 
-        while(child < i) {
+        while (child < i) {
             if(child + 1 < i && arr[child + 1] > arr[child])
                 ++child;
             if(arr[child] <= temp)
@@ -223,3 +226,5 @@ template<typename T>
 inline void heap_sort(T* arr, const size_t n) noexcept {
 	heapSort(arr, n);
 }
+
+#endif
