@@ -4,28 +4,30 @@
 typedef __int128 i128;
 using namespace std;
 
+// 1 -14588 31196079 -18054298332
+
+constexpr double EL = 0.00001;
 double a, b, c, d;
 
 inline double fx(double x) noexcept {
-	return a * a * a * x + b * b * x + c * x + d;
+	return a * 1.0 * x * x * x + b * x * x + c * x + d;
 }
 
 int main() {
-    cin.tie(nullptr)->sync_with_stdio(false);
     cin >> a >> b >> c >> d;
-
     double l = -1000000.0, r = 1000000.0;
 
     while (l < r) {
-    	double left = fx(l), right = fx(r), m = (l + r) / 2.0, mid = fx(m);
-    	if (mid <= 0.00001 && mid >= -0.00001) {
+    	double m = (l + r) / 2.0;
+        double mid = fx(m);
+    	if (mid <= EL && mid >= -EL) {
     		cout << m;
     		return 0;
     	}
-    	if (mid < -0.00001)
-    		l = mid;
+    	if (mid < 0)
+    		l = m;
     	else
-    		r = mid;
+    		r = m;
     }
 
     cout << l;
