@@ -11,7 +11,7 @@ using namespace std;
 static constexpr size_t MAX_ELEM_LIMIT = 5000, MIN_ELEM_LIMIT = 0, HIST_SIZE = 256;
 
 template<typename T>
-void counting_sort(T* arr, size_t _n, const size_t min_lim = MIN_ELEM_LIMIT, const size_t max_lim = MAX_ELEM_LIMIT) noexcept {
+static void counting_sort(T* arr, size_t _n, const size_t min_lim = MIN_ELEM_LIMIT, const size_t max_lim = MAX_ELEM_LIMIT) noexcept {
     if (_n < 2)
         return;
 
@@ -47,13 +47,13 @@ void counting_sort(T* arr, size_t _n, const size_t min_lim = MIN_ELEM_LIMIT, con
 }
 
 template<typename T>
-inline void countingSort(T* arr, size_t _n, const size_t min_lim = MIN_ELEM_LIMIT, const size_t max_lim = MAX_ELEM_LIMIT) noexcept {
+static inline void countingSort(T* arr, size_t _n, const size_t min_lim = MIN_ELEM_LIMIT, const size_t max_lim = MAX_ELEM_LIMIT) noexcept {
 	counting_sort(arr, _n, min_lim, max_lim);
 }
 
 
 template<typename T>
-void radixSort(T* arr, const size_t _size) {
+static void radixSort(T* arr, const size_t _size) {
     if (_size < 2)
         return;
 
@@ -129,8 +129,41 @@ void radixSort(T* arr, const size_t _size) {
 }
 
 template<typename T>
-inline void radix_sort(T* arr, const size_t _n) noexcept {
-	radixSort(arr, _n);
+static void radix_sort(T* arr, const size_t _size) {
+    const size_t& n = _size;
+    if (n < 2)
+        return;
+
+    constexpr size_t num_passes = sizeof(T);
+    T* buffer = new T[n];
+    T* src = arr;
+    T* dst = buffer;
+
+    size_t histogram[HIST_SIZE];
+    for (size_t pass = 0; pass < num_passes; ++pass) {
+        memset(histogram, 0, sizeof(histogram));
+
+        for (size_t i = 0; i < n; ++i) {
+            uint8_t digit = (src[i] >> (pass << 3)) & 0xFF;
+            histogram[digit]++;
+        }
+
+        size_t pos = 0;
+        for(size_t i = 0; i < HIST_SIZE; ++i) {
+            size_t tmp = histogram[i];
+            histogram[i] = pos;
+            pos += tmp;
+        }
+        for (size_t i = 0; i < n; ++i) {
+            uint8_t digit = (src[i] >> (pass << 3)) & 0xFF;
+            dst[histogram[digit]] = src[i];
+            histogram[digit]++;
+        }
+        swap(src, dst);
+    }
+
+    if (num_passes & 1 == 0)
+        memcpy(arr, dst, n * sizeof(T));
 }
 
 
