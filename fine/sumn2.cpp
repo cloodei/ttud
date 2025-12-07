@@ -36,12 +36,12 @@ void run(int x) {
 		return;
 	}
 
-	s = some(x);
+	s = some(x - 1);
 	if (s > n)
 		return;
 
 	if (s == n) {
-		print(x);
+		print(x - 1);
 		return;
 	}
 
