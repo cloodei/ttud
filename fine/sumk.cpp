@@ -15,6 +15,8 @@ long long sol(long long s, long long n) {
 	if  (marp.count({ s, n }))
 		return marp[{ s, n }];
 
+	if (a[n] > s)
+		return marp[{ s, n }] = sol(s, n - 1);
 	return marp[{ s, n }] = sol(s - a[n], n - 1) + sol(s, n - 1);
 }
 
