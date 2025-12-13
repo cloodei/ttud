@@ -34,7 +34,7 @@ int main() {
     		if (a[i - 1] == b[j - 1])
     			dp[i][j] = dp[i - 1][j - 1] + a[i - 1];
     		else
-    			dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+    			dp[i][j] = dp[i][j - 1];
 
     cout << "Day con co tong lon nhat = " << dp[m][n];
     return 0;
